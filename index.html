@@ -68,35 +68,43 @@ footer{position:fixed;bottom:0;width:100%;background:white;border-top:1px solid 
 <div class="audio"><button onclick="speak('Mi dolor es nivel diez, el peor dolor.','es-US')">🔊 Español</button><button onclick="speak('My pain is level ten, the worst pain.','en-US')">🔊 English</button></div><div class="hint">Toca un botón para escuchar la frase.</div></section>
 <script>
 
-function speak(t,l){
+function speak(text, lang) {
 
-  try{
+  speechSynthesis.cancel();
 
-    speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
 
-    var u=new SpeechSynthesisUtterance(t);
+  u.lang = lang;
 
-    u.lang=l;
+  u.rate = 0.82;
 
-    var voices=speechSynthesis.getVoices();
+  u.pitch = 1;
 
-    var v=voices.find(function(x){return x.lang===l;}) ||
+  const voices = speechSynthesis.getVoices();
 
-          voices.find(function(x){return x.lang && x.lang.startsWith(l.substring(0,2));});
+  if (lang === 'en-US') {
 
-    if(v) u.voice=v;
+    u.voice =
 
-    u.rate=0.82;
+      voices.find(v => v.lang === 'en-US' && /Samantha/i.test(v.name)) ||
 
-    u.pitch=1;
+      voices.find(v => v.lang === 'en-US') ||
 
-    setTimeout(function(){speechSynthesis.speak(u);},100);
+      null;
 
-  }catch(e){
+  } else {
 
-    alert("No se pudo reproducir el audio.");
+    u.voice =
+
+      voices.find(v => v.lang === 'es-US') ||
+
+      voices.find(v => v.lang && v.lang.startsWith('es')) ||
+
+      null;
 
   }
+
+  speechSynthesis.speak(u);
 
 }
 
