@@ -1,0 +1,1285 @@
+<!doctype html>
+
+<html lang="es">
+
+<head>
+
+<meta charset="utf-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<title>Mi Menú / My Menu</title>
+
+<style>
+
+*{box-sizing:border-box}
+
+body{
+
+  margin:0;
+
+  background:#f5f9ff;
+
+  color:#10264d;
+
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+
+}
+
+header{
+
+  position:sticky;
+
+  top:0;
+
+  z-index:10;
+
+  background:white;
+
+  padding:calc(12px + env(safe-area-inset-top)) 12px 12px;
+
+  border-bottom:1px solid #d7e3f3;
+
+  text-align:center;
+
+}
+
+h1{
+
+  margin:0;
+
+  font-size:24px;
+
+}
+
+.subtitle{
+
+  font-size:13px;
+
+  margin-top:3px;
+
+  color:#64748b;
+
+}
+
+.home{
+
+  display:inline-block;
+
+  margin-top:8px;
+
+  text-decoration:none;
+
+  color:#075ebd;
+
+  font-weight:800;
+
+}
+
+.tabs{
+
+  display:flex;
+
+  gap:8px;
+
+  overflow-x:auto;
+
+  padding:12px 10px;
+
+  background:white;
+
+}
+
+.tabs a{
+
+  white-space:nowrap;
+
+  text-decoration:none;
+
+  background:#e8f3ff;
+
+  color:#075ebd;
+
+  padding:10px 14px;
+
+  border-radius:20px;
+
+  font-weight:800;
+
+}
+
+section{
+
+  padding:8px 10px 18px;
+
+}
+
+h2{
+
+  font-size:23px;
+
+  margin:14px 3px 10px;
+
+}
+
+.note{
+
+  margin:0 3px 12px;
+
+  font-size:13px;
+
+  color:#64748b;
+
+}
+
+.grid{
+
+  display:grid;
+
+  grid-template-columns:repeat(3,1fr);
+
+  gap:9px;
+
+}
+
+.item{
+
+  border:2px solid #82bdec;
+
+  border-radius:17px;
+
+  background:white;
+
+  min-height:130px;
+
+  padding:9px 5px;
+
+  text-align:center;
+
+  cursor:pointer;
+
+  color:#10264d;
+
+  font-family:inherit;
+
+}
+
+.item.selected{
+
+  background:#dff7e6;
+
+  border:4px solid #35a853;
+
+}
+
+.pic{
+
+  font-size:48px;
+
+  line-height:1.1;
+
+}
+
+.es{
+
+  font-size:14px;
+
+  font-weight:900;
+
+  margin-top:5px;
+
+}
+
+.en{
+
+  font-size:11px;
+
+  margin-top:3px;
+
+  color:#475569;
+
+}
+
+.speak{
+
+  margin-top:7px;
+
+  border:0;
+
+  border-radius:12px;
+
+  padding:6px 8px;
+
+  background:#e7f2ff;
+
+  color:#075ebd;
+
+  font-size:12px;
+
+  font-weight:800;
+
+}
+
+.orderbar{
+
+  position:fixed;
+
+  left:0;
+
+  right:0;
+
+  bottom:0;
+
+  z-index:20;
+
+  background:white;
+
+  border-top:1px solid #cbd8e8;
+
+  padding:9px 10px calc(9px + env(safe-area-inset-bottom));
+
+}
+
+.orderbutton{
+
+  width:100%;
+
+  border:0;
+
+  border-radius:17px;
+
+  background:#1565c0;
+
+  color:white;
+
+  font-size:18px;
+
+  font-weight:900;
+
+  padding:15px;
+
+}
+
+.spacer{
+
+  height:95px;
+
+}
+
+#order{
+
+  display:none;
+
+  position:fixed;
+
+  inset:0;
+
+  z-index:50;
+
+  background:#f5f9ff;
+
+  overflow:auto;
+
+  padding:calc(20px + env(safe-area-inset-top)) 16px 35px;
+
+}
+
+#order.show{
+
+  display:block;
+
+}
+
+.close{
+
+  float:right;
+
+  border:0;
+
+  background:#e8eef6;
+
+  border-radius:50%;
+
+  width:48px;
+
+  height:48px;
+
+  font-size:28px;
+
+}
+
+.orderTitle{
+
+  font-size:30px;
+
+  font-weight:900;
+
+  margin:20px 0 4px;
+
+}
+
+.orderSub{
+
+  color:#64748b;
+
+  margin-bottom:20px;
+
+}
+
+#orderList{
+
+  background:white;
+
+  border-radius:18px;
+
+  padding:15px;
+
+  font-size:18px;
+
+  line-height:1.8;
+
+}
+
+.bigSpeak{
+
+  width:100%;
+
+  margin-top:14px;
+
+  border:0;
+
+  border-radius:17px;
+
+  padding:16px;
+
+  font-size:17px;
+
+  font-weight:900;
+
+  background:#e7f2ff;
+
+  color:#075ebd;
+
+}
+
+.clear{
+
+  width:100%;
+
+  margin-top:10px;
+
+  border:0;
+
+  border-radius:17px;
+
+  padding:14px;
+
+  font-size:16px;
+
+  font-weight:800;
+
+  background:#ffe8e8;
+
+  color:#a21b1b;
+
+}
+
+footer{
+
+  text-align:center;
+
+  padding:20px 10px 120px;
+
+  font-size:12px;
+
+  color:#64748b;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>🍽️ Mi Menú</h1>
+
+<div class="subtitle">My Menu</div>
+
+<a class="home" href="index.html">← 💗 Tablero de Comunicación / Communication Board</a>
+
+</header>
+
+<nav class="tabs">
+
+<a href="#breakfast">🌅 Desayuno</a>
+
+<a href="#lunch">🍔 Almuerzo/Cena</a>
+
+<a href="#sides">🍟 Acompañantes</a>
+
+<a href="#drinks">🥤 Bebidas</a>
+
+<a href="#desserts">🍨 Postres</a>
+
+</nav>
+
+<section id="breakfast">
+
+<h2>🌅 Desayuno / Breakfast</h2>
+
+<p class="note">Toca lo que deseas agregar a tu pedido. / Tap what you want to add to your order.</p>
+
+<div class="grid">
+
+<button class="item" data-es="Muffin inglés" data-en="English Muffin">
+
+<div class="pic">🍞</div>
+
+<div class="es">Muffin inglés</div>
+
+<div class="en">English Muffin</div>
+
+</button>
+
+<button class="item" data-es="Panqueques" data-en="Pancakes">
+
+<div class="pic">🥞</div>
+
+<div class="es">Panqueques</div>
+
+<div class="en">Pancakes</div>
+
+</button>
+
+<button class="item" data-es="Panqueques con chispas de chocolate" data-en="Chocolate Chip Pancakes">
+
+<div class="pic">🥞🍫</div>
+
+<div class="es">Panqueques con chocolate</div>
+
+<div class="en">Chocolate Chip Pancakes</div>
+
+</button>
+
+<button class="item" data-es="Muffin de arándanos" data-en="Blueberry Muffin">
+
+<div class="pic">🧁</div>
+
+<div class="es">Muffin de arándanos</div>
+
+<div class="en">Blueberry Muffin</div>
+
+</button>
+
+<button class="item" data-es="Tostada francesa" data-en="French Toast">
+
+<div class="pic">🍞</div>
+
+<div class="es">Tostada francesa</div>
+
+<div class="en">French Toast</div>
+
+</button>
+
+<button class="item" data-es="Tostada de trigo" data-en="Wheat Toast">
+
+<div class="pic">🍞</div>
+
+<div class="es">Tostada de trigo</div>
+
+<div class="en">Wheat Toast</div>
+
+</button>
+
+<button class="item" data-es="Tostada blanca" data-en="White Toast">
+
+<div class="pic">🍞</div>
+
+<div class="es">Tostada blanca</div>
+
+<div class="en">White Toast</div>
+
+</button>
+
+<button class="item" data-es="Huevos revueltos" data-en="Scrambled Eggs">
+
+<div class="pic">🍳</div>
+
+<div class="es">Huevos revueltos</div>
+
+<div class="en">Scrambled Eggs</div>
+
+</button>
+
+<button class="item" data-es="Huevo cocido" data-en="Hard Boiled Egg">
+
+<div class="pic">🥚</div>
+
+<div class="es">Huevo cocido</div>
+
+<div class="en">Hard Boiled Egg</div>
+
+</button>
+
+<button class="item" data-es="Salchicha" data-en="Sausage">
+
+<div class="pic">🌭</div>
+
+<div class="es">Salchicha</div>
+
+<div class="en">Sausage</div>
+
+</button>
+
+<button class="item" data-es="Tocino" data-en="Bacon">
+
+<div class="pic">🥓</div>
+
+<div class="es">Tocino</div>
+
+<div class="en">Bacon</div>
+
+</button>
+
+<button class="item" data-es="Papa hash brown" data-en="Potato Patty">
+
+<div class="pic">🥔</div>
+
+<div class="es">Papa hash brown</div>
+
+<div class="en">Potato Patty</div>
+
+</button>
+
+<button class="item" data-es="Papas caseras" data-en="Home Fries">
+
+<div class="pic">🥔</div>
+
+<div class="es">Papas caseras</div>
+
+<div class="en">Home Fries</div>
+
+</button>
+
+<button class="item" data-es="Avena" data-en="Oatmeal">
+
+<div class="pic">🥣</div>
+
+<div class="es">Avena</div>
+
+<div class="en">Oatmeal</div>
+
+</button>
+
+<button class="item" data-es="Cereal" data-en="Cereal">
+
+<div class="pic">🥣</div>
+
+<div class="es">Cereal</div>
+
+<div class="en">Cereal</div>
+
+</button>
+
+<button class="item" data-es="Banana" data-en="Banana">
+
+<div class="pic">🍌</div>
+
+<div class="es">Banana</div>
+
+<div class="en">Banana</div>
+
+</button>
+
+<button class="item" data-es="Frutas" data-en="Fruit">
+
+<div class="pic">🍓</div>
+
+<div class="es">Frutas</div>
+
+<div class="en">Fruit</div>
+
+</button>
+
+<button class="item" data-es="Yogur" data-en="Yogurt">
+
+<div class="pic">🥣</div>
+
+<div class="es">Yogur</div>
+
+<div class="en">Yogurt</div>
+
+</button>
+
+</div>
+
+</section>
+
+<section id="lunch">
+
+<h2>🍔 Almuerzo y Cena / Lunch & Dinner</h2>
+
+<div class="grid">
+
+<button class="item" data-es="Ensalada" data-en="Salad">
+
+<div class="pic">🥗</div>
+
+<div class="es">Ensalada</div>
+
+<div class="en">Salad</div>
+
+</button>
+
+<button class="item" data-es="Sopa de pollo con fideos" data-en="Chicken Noodle Soup">
+
+<div class="pic">🍲</div>
+
+<div class="es">Sopa de pollo</div>
+
+<div class="en">Chicken Noodle Soup</div>
+
+</button>
+
+<button class="item" data-es="Sopa de tomate" data-en="Tomato Basil Soup">
+
+<div class="pic">🥣</div>
+
+<div class="es">Sopa de tomate</div>
+
+<div class="en">Tomato Basil Soup</div>
+
+</button>
+
+<button class="item" data-es="Sándwich de queso a la parrilla" data-en="Grilled Cheese">
+
+<div class="pic">🥪</div>
+
+<div class="es">Sándwich de queso</div>
+
+<div class="en">Grilled Cheese</div>
+
+</button>
+
+<button class="item" data-es="Sándwich de mantequilla de maní y jalea" data-en="Peanut Butter and Jelly">
+
+<div class="pic">🥪</div>
+
+<div class="es">Mantequilla de maní y jalea</div>
+
+<div class="en">Peanut Butter & Jelly</div>
+
+</button>
+
+<button class="item" data-es="Pollo a la parrilla" data-en="Grilled Chicken">
+
+<div class="pic">🍗</div>
+
+<div class="es">Pollo a la parrilla</div>
+
+<div class="en">Grilled Chicken</div>
+
+</button>
+
+<button class="item" data-es="Hamburguesa con queso" data-en="Cheeseburger">
+
+<div class="pic">🍔</div>
+
+<div class="es">Hamburguesa con queso</div>
+
+<div class="en">Cheeseburger</div>
+
+</button>
+
+<button class="item" data-es="Hamburguesa" data-en="Hamburger">
+
+<div class="pic">🍔</div>
+
+<div class="es">Hamburguesa</div>
+
+<div class="en">Hamburger</div>
+
+</button>
+
+<button class="item" data-es="Quesadilla" data-en="Quesadilla">
+
+<div class="pic">🌮</div>
+
+<div class="es">Quesadilla</div>
+
+<div class="en">Quesadilla</div>
+
+</button>
+
+<button class="item" data-es="Pollo parmesano" data-en="Chicken Parmesan">
+
+<div class="pic">🍗</div>
+
+<div class="es">Pollo parmesano</div>
+
+<div class="en">Chicken Parmesan</div>
+
+</button>
+
+<button class="item" data-es="Macarrones con queso" data-en="Macaroni and Cheese">
+
+<div class="pic">🧀</div>
+
+<div class="es">Macarrones con queso</div>
+
+<div class="en">Macaroni & Cheese</div>
+
+</button>
+
+<button class="item" data-es="Tiras de pollo" data-en="Chicken Strips">
+
+<div class="pic">🍗</div>
+
+<div class="es">Tiras de pollo</div>
+
+<div class="en">Chicken Strips</div>
+
+</button>
+
+<button class="item" data-es="Pavo asado" data-en="Roast Turkey">
+
+<div class="pic">🍗</div>
+
+<div class="es">Pavo asado</div>
+
+<div class="en">Roast Turkey</div>
+
+</button>
+
+<button class="item" data-es="Pizza" data-en="Pizza">
+
+<div class="pic">🍕</div>
+
+<div class="es">Pizza</div>
+
+<div class="en">Pizza</div>
+
+</button>
+
+<button class="item" data-es="Burrito de carne" data-en="Beef Burrito">
+
+<div class="pic">🌯</div>
+
+<div class="es">Burrito de carne</div>
+
+<div class="en">Beef Burrito</div>
+
+</button>
+
+</div>
+
+</section>
+
+<section id="sides">
+
+<h2>🍟 Acompañantes / Sides</h2>
+
+<div class="grid">
+
+<button class="item" data-es="Papas fritas" data-en="French Fries">
+
+<div class="pic">🍟</div>
+
+<div class="es">Papas fritas</div>
+
+<div class="en">French Fries</div>
+
+</button>
+
+<button class="item" data-es="Puré de papas" data-en="Mashed Potatoes">
+
+<div class="pic">🥔</div>
+
+<div class="es">Puré de papas</div>
+
+<div class="en">Mashed Potatoes</div>
+
+</button>
+
+<button class="item" data-es="Arroz integral" data-en="Brown Rice">
+
+<div class="pic">🍚</div>
+
+<div class="es">Arroz integral</div>
+
+<div class="en">Brown Rice</div>
+
+</button>
+
+<button class="item" data-es="Arroz blanco" data-en="White Rice">
+
+<div class="pic">🍚</div>
+
+<div class="es">Arroz blanco</div>
+
+<div class="en">White Rice</div>
+
+</button>
+
+<button class="item" data-es="Brócoli" data-en="Broccoli">
+
+<div class="pic">🥦</div>
+
+<div class="es">Brócoli</div>
+
+<div class="en">Broccoli</div>
+
+</button>
+
+<button class="item" data-es="Zanahorias" data-en="Carrots">
+
+<div class="pic">🥕</div>
+
+<div class="es">Zanahorias</div>
+
+<div class="en">Carrots</div>
+
+</button>
+
+<button class="item" data-es="Judías verdes" data-en="Green Beans">
+
+<div class="pic">🫛</div>
+
+<div class="es">Judías verdes</div>
+
+<div class="en">Green Beans</div>
+
+</button>
+
+<button class="item" data-es="Maíz" data-en="Corn">
+
+<div class="pic">🌽</div>
+
+<div class="es">Maíz</div>
+
+<div class="en">Corn</div>
+
+</button>
+
+</div>
+
+</section>
+
+<section id="drinks">
+
+<h2>🥤 Bebidas / Beverages</h2>
+
+<div class="grid">
+
+<button class="item" data-es="Leche entera" data-en="Whole Milk">
+
+<div class="pic">🥛</div>
+
+<div class="es">Leche entera</div>
+
+<div class="en">Whole Milk</div>
+
+</button>
+
+<button class="item" data-es="Leche dos por ciento" data-en="Two Percent Milk">
+
+<div class="pic">🥛</div>
+
+<div class="es">Leche 2%</div>
+
+<div class="en">2% Milk</div>
+
+</button>
+
+<button class="item" data-es="Leche de chocolate" data-en="Chocolate Milk">
+
+<div class="pic">🥛🍫</div>
+
+<div class="es">Leche de chocolate</div>
+
+<div class="en">Chocolate Milk</div>
+
+</button>
+
+<button class="item" data-es="Leche de almendras" data-en="Almond Milk">
+
+<div class="pic">🥛</div>
+
+<div class="es">Leche de almendras</div>
+
+<div class="en">Almond Milk</div>
+
+</button>
+
+<button class="item" data-es="Jugo de naranja" data-en="Orange Juice">
+
+<div class="pic">🍊</div>
+
+<div class="es">Jugo de naranja</div>
+
+<div class="en">Orange Juice</div>
+
+</button>
+
+<button class="item" data-es="Jugo de manzana" data-en="Apple Juice">
+
+<div class="pic">🧃</div>
+
+<div class="es">Jugo de manzana</div>
+
+<div class="en">Apple Juice</div>
+
+</button>
+
+<button class="item" data-es="Limonada" data-en="Lemonade">
+
+<div class="pic">🍋</div>
+
+<div class="es">Limonada</div>
+
+<div class="en">Lemonade</div>
+
+</button>
+
+<button class="item" data-es="Té frío" data-en="Iced Tea">
+
+<div class="pic">🧋</div>
+
+<div class="es">Té frío</div>
+
+<div class="en">Iced Tea</div>
+
+</button>
+
+<button class="item" data-es="Chocolate caliente" data-en="Hot Chocolate">
+
+<div class="pic">☕</div>
+
+<div class="es">Chocolate caliente</div>
+
+<div class="en">Hot Chocolate</div>
+
+</button>
+
+<button class="item" data-es="Agua" data-en="Water">
+
+<div class="pic">💧</div>
+
+<div class="es">Agua</div>
+
+<div class="en">Water</div>
+
+</button>
+
+</div>
+
+</section>
+
+<section id="desserts">
+
+<h2>🍨 Postres / Desserts</h2>
+
+<div class="grid">
+
+<button class="item" data-es="Galleta con chispas de chocolate" data-en="Chocolate Chip Cookie">
+
+<div class="pic">🍪</div>
+
+<div class="es">Galleta de chocolate</div>
+
+<div class="en">Chocolate Chip Cookie</div>
+
+</button>
+
+<button class="item" data-es="Helado de chocolate" data-en="Chocolate Ice Cream">
+
+<div class="pic">🍨</div>
+
+<div class="es">Helado de chocolate</div>
+
+<div class="en">Chocolate Ice Cream</div>
+
+</button>
+
+<button class="item" data-es="Helado de vainilla" data-en="Vanilla Ice Cream">
+
+<div class="pic">🍦</div>
+
+<div class="es">Helado de vainilla</div>
+
+<div class="en">Vanilla Ice Cream</div>
+
+</button>
+
+<button class="item" data-es="Helado de fresa" data-en="Strawberry Ice Cream">
+
+<div class="pic">🍓🍨</div>
+
+<div class="es">Helado de fresa</div>
+
+<div class="en">Strawberry Ice Cream</div>
+
+</button>
+
+<button class="item" data-es="Brownie" data-en="Brownie">
+
+<div class="pic">🍫</div>
+
+<div class="es">Brownie</div>
+
+<div class="en">Brownie</div>
+
+</button>
+
+<button class="item" data-es="Pudín de vainilla" data-en="Vanilla Pudding">
+
+<div class="pic">🍮</div>
+
+<div class="es">Pudín de vainilla</div>
+
+<div class="en">Vanilla Pudding</div>
+
+</button>
+
+<button class="item" data-es="Pudín de chocolate" data-en="Chocolate Pudding">
+
+<div class="pic">🍮</div>
+
+<div class="es">Pudín de chocolate</div>
+
+<div class="en">Chocolate Pudding</div>
+
+</button>
+
+</div>
+
+</section>
+
+<footer>
+
+💗 <b>Donación de la Familia González Stolk</b><br>
+
+Donated with love by the González Stolk Family
+
+</footer>
+
+<div class="spacer"></div>
+
+<div class="orderbar">
+
+<button class="orderbutton" onclick="showOrder()">
+
+🛒 Mi pedido / My Order (<span id="count">0</span>)
+
+</button>
+
+</div>
+
+<div id="order">
+
+<button class="close" onclick="closeOrder()">×</button>
+
+<div class="orderTitle">🛒 Mi pedido</div>
+
+<div class="orderSub">My Order</div>
+
+<div id="orderList">
+
+Todavía no has seleccionado nada.<br>
+
+You haven't selected anything yet.
+
+</div>
+
+<button class="bigSpeak" onclick="speakOrder('es-US')">
+
+🔊 Escuchar mi pedido en Español
+
+</button>
+
+<button class="bigSpeak" onclick="speakOrder('en-US')">
+
+🔊 Hear My Order in English
+
+</button>
+
+<button class="clear" onclick="clearOrder()">
+
+🗑️ Borrar pedido / Clear Order
+
+</button>
+
+</div>
+
+<script>
+
+const selected=[];
+
+document.querySelectorAll('.item').forEach(function(item){
+
+  item.addEventListener('click',function(){
+
+    const es=item.dataset.es;
+
+    const en=item.dataset.en;
+
+    const found=selected.findIndex(x=>x.es===es);
+
+    if(found>=0){
+
+      selected.splice(found,1);
+
+      item.classList.remove('selected');
+
+    }else{
+
+      selected.push({es:es,en:en});
+
+      item.classList.add('selected');
+
+      speak("Quiero "+es+".","es-US");
+
+    }
+
+    document.getElementById('count').textContent=selected.length;
+
+  });
+
+});
+
+function showOrder(){
+
+  updateOrder();
+
+  document.getElementById('order').classList.add('show');
+
+}
+
+function closeOrder(){
+
+  document.getElementById('order').classList.remove('show');
+
+}
+
+function updateOrder(){
+
+  const box=document.getElementById('orderList');
+
+  if(selected.length===0){
+
+    box.innerHTML="Todavía no has seleccionado nada.<br>You haven't selected anything yet.";
+
+    return;
+
+  }
+
+  box.innerHTML=selected.map(function(x){
+
+    return "✓ <b>"+x.es+"</b><br><span style='font-size:14px;color:#64748b'>"+x.en+"</span>";
+
+  }).join("<hr>");
+
+}
+
+function clearOrder(){
+
+  selected.length=0;
+
+  document.querySelectorAll('.item').forEach(function(item){
+
+    item.classList.remove('selected');
+
+  });
+
+  document.getElementById('count').textContent="0";
+
+  updateOrder();
+
+}
+
+function speak(text,lang){
+
+  speechSynthesis.cancel();
+
+  const u=new SpeechSynthesisUtterance(text);
+
+  u.lang=lang;
+
+  u.rate=.82;
+
+  u.pitch=1;
+
+  const voices=speechSynthesis.getVoices();
+
+  if(lang==="en-US"){
+
+    u.voice=
+
+      voices.find(v=>v.lang==="en-US" && /Samantha/i.test(v.name)) ||
+
+      voices.find(v=>v.lang==="en-US") ||
+
+      null;
+
+  }else{
+
+    u.voice=
+
+      voices.find(v=>v.lang==="es-US") ||
+
+      voices.find(v=>v.lang && v.lang.startsWith("es")) ||
+
+      null;
+
+  }
+
+  speechSynthesis.speak(u);
+
+}
+
+function speakOrder(lang){
+
+  if(selected.length===0){
+
+    speak(
+
+      lang==="es-US"
+
+      ? "Todavía no he seleccionado nada."
+
+      : "I have not selected anything yet.",
+
+      lang
+
+    );
+
+    return;
+
+  }
+
+  let text;
+
+  if(lang==="es-US"){
+
+    text="Hola. Quisiera ordenar: "+selected.map(x=>x.es).join(", ")+". Gracias.";
+
+  }else{
+
+    text="Hello. I would like to order: "+selected.map(x=>x.en).join(", ")+". Thank you.";
+
+  }
+
+  speak(text,lang);
+
+}
+
+</script>
+
+</body>
+
+</html>
